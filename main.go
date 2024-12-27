@@ -1,7 +1,15 @@
 package main
 
-import "gogogo/user"
+import (
+	"gogogo/center/redis"
+	"gogogo/center/server"
+)
 
 func main() {
-	user.Create()
+	redis.InitRedis()
+	server.Init()
+	server.List()
+	//net.StartServer()
+	//time.Sleep(3000)
+	//net.StartClient()
 }
