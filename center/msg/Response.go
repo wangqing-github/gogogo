@@ -15,7 +15,7 @@ func Success(data any) Response {
 	return resp
 }
 
-func (receiver Response) Error(msg string) Response {
+func Fail(msg string) Response {
 	if len(msg) == 0 {
 		msg = "error"
 	}
