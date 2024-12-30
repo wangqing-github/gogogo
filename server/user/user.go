@@ -10,57 +10,59 @@ import (
 var userMap map[string]*User
 
 type User struct {
-	accountId  string
-	serverId   int64
-	id         string
-	nickName   string
-	level      int32
-	gem        int64
-	gold       int64
-	exp        int32
-	vipLevel   int32
-	createTime int64
+	AccountId  string
+	ServerId   int64
+	Id         string
+	NickName   string
+	Head       string
+	Level      int32
+	Gem        int64
+	Gold       int64
+	Exp        int32
+	VipLevel   int32
+	CreateTime int64
 }
 
 // 模拟玩家增加经验升级
 func (user *User) addExp(num int32) {
 	var maxLevel int32 = 100
 	var oneLevelExp int32 = 10
-	totalExp := user.exp + num
+	totalExp := user.Exp + num
 	upLevel := totalExp / oneLevelExp
-	if upLevel+user.level > maxLevel {
-		user.level = maxLevel
-		user.exp = 0
+	if upLevel+user.Level > maxLevel {
+		user.Level = maxLevel
+		user.Exp = 0
 	} else {
-		user.level += upLevel
+		user.Level += upLevel
 		rest := totalExp % oneLevelExp
-		user.exp = rest
+		user.Exp = rest
 	}
 }
 
-func Create(name, accountId string, serverId int64) {
-	user := User{id: "-1",
-		accountId:  accountId,
-		serverId:   serverId,
-		nickName:   name,
-		level:      1,
-		createTime: time.Now().Unix(),
+func Create(name, AccountId string, ServerId int64) {
+	user := User{
+		Id:         "-1",
+		AccountId:  AccountId,
+		ServerId:   ServerId,
+		NickName:   name,
+		Level:      1,
+		CreateTime: time.Now().Unix(),
 	}
-	redis.SetValue("user:"+user.id, user)
-	userMap[user.id] = &user
+	redis.SetValue("user:"+user.Id, user)
+	userMap[user.Id] = &user
 }
 
 func Info(id string) User {
 	value := redis.GetByKey("user" + id)
 	if len(value) == 0 {
-		return User{id: "-1"}
+		return User{Id: "-1"}
 	}
 	var user User
 	err := json.Unmarshal([]byte(value), &user)
 	if err != nil {
 		log.Fatalf("无法反序列化User: %v", err)
 	}
-	userMap[user.id] = &user
+	userMap[user.Id] = &user
 	return user
 }
 
@@ -70,8 +72,8 @@ func ChangeName(id, name string) string {
 		return "玩家不存在"
 	}
 	checkWord(name)
-	user.nickName = name
-	redis.SetValue("user:"+user.id, user)
+	user.NickName = name
+	redis.SetValue("user:"+user.Id, user)
 	return "修改成功"
 }
 
@@ -87,4 +89,8 @@ func AddExp(id string, num int32) {
 		return
 	}
 	user.addExp(num)
+}
+
+func GetCacheUser(userId string) *User {
+	return userMap[userId]
 }
