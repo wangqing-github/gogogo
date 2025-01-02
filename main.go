@@ -1,15 +1,15 @@
 package main
 
 import (
-	"gogogo/center/redis"
-	"gogogo/center/server"
+	"gogogo/center/router"
 )
 
 func main() {
-	redis.InitRedis()
-	server.Init()
-	server.List()
+	//redis.InitRedis()
+	//server.Init()
+	//server.List()
 	//net.StartServer()
 	//time.Sleep(3000)
 	//net.StartClient()
+	router.Test()
 }

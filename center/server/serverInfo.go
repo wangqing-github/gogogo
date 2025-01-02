@@ -36,15 +36,13 @@ func Init() {
 }
 
 // List 查找服务器列表
-func List() {
+func List() *[]Info {
 	fmt.Println("获取服务器列表")
 	serverList := redis.GetByKey("serverList")
 	var mySliceFromRedis []Info
 	err := json.Unmarshal([]byte(serverList), &mySliceFromRedis)
 	if err != nil {
-		return
+		return nil
 	}
-	fmt.Println(mySliceFromRedis)
-	fmt.Println(mySliceFromRedis[0])
-	fmt.Printf("类型为%T", mySliceFromRedis)
+	return &mySliceFromRedis
 }
