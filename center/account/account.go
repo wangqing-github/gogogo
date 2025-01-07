@@ -14,11 +14,11 @@ var accountMap map[int64]*Account
 
 type Account struct {
 	Id       int64  `json:"id"`
-	Name     string `json:"name"`
+	Name     string `json:"name" binding:"require"`
 	Ip       string
 	Phone    string `json:"phone"`
 	Email    string `json:"email"`
-	PassWord string `json:"passWord"`
+	PassWord string `json:"passWord" binding:"require"`
 	DeviceId string `json:"deviceId"`
 	ServerId int64  `json:"serverId"`
 }
@@ -59,7 +59,6 @@ func Create(context *gin.Context) {
 	redis.SetValue(fmt.Sprintf("%s%d", "account", newAccount.Id), userJson)
 	fmt.Println("创建角色成功")
 	context.JSON(200, newAccount)
-
 }
 
 func UpdatePwd(context *gin.Context) {

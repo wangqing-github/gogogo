@@ -11,22 +11,23 @@ import (
 
 type User struct {
 	Name  string `form:"name"`
-	Age   int    `form:"age"`
+	Age   int    `form:"age" binding:"required,gt=14"`
 	Email string `form:"email"`
 }
 
 func Test() {
 	r := gin.Default()
+	act := r.Group("/account")
 	{
-		r.GET("/account/info", accountInfo)
-		r.GET("/server/list", serverList)
+		act.GET("/info", accountInfo)
+		act.POST("/create", createAccount)
+		act.POST("/updatePwd", updatePwd)
 	}
-
+	svr := r.Group("/server")
 	{
-		r.POST("/account/create", createAccount)
-		r.POST("/account/updatePwd", updatePwd)
-		r.POST("/account/addForm", userAddForm)
+		svr.GET("/list", serverList)
 	}
+	r.POST("/account/addForm", userAddForm)
 	r.Run(":8080") // 监听并在 0.0.0.0:8080 上启动服务
 }
 

@@ -1,0 +1,15 @@
+syntax = "proto3";
+enum CMD{
+  CMD_USER = 0;
+  CMD_FRIEND = 1;
+  CMD_CARD = 3;
+}
+
+
+enum ACT{
+  ACT_USER_INFO = 0;
+  ACT_USER_CREATE = 1;
+  ACT_USER_ADD_EXP = 2;
+
+  ACT_ACCOUNT_INFO = 4;
+}

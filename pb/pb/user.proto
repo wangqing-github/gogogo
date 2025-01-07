@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+message RqstUserInfo {
+
+}
+
+message RespUserInfo {
+  string name = 1;
+  int32 id = 2;
+}
+
+message RqstCreateUser {
+  string name = 1;
+  int32 id = 2;
+}
+
+message RespCreateUser {
+  string name = 1;
+  int32 id = 2;
+}
