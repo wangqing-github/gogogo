@@ -5,7 +5,6 @@ import (
 	pb "gogogo/pb/msg"
 )
 
-var handlerFuncMap map[int]antnet.HandlerFunc
 var ExtNetHandler = &antnet.DefMsgHandler{}
 var PbParser = &antnet.Parser{Type: antnet.ParserTypePB}
 
@@ -24,9 +23,7 @@ func handlerInit() {
 
 func addHandler(cmd pb.Pb_CMD, act pb.Pb_ACT, c2s interface{}, s2c interface{}, fun antnet.HandlerFunc) {
 	PbParser.Register(uint8(cmd), uint8(act), c2s, s2c)
-	msgId := antnet.CmdAct(uint8(cmd), uint8(act))
-	handlerFuncMap[msgId] = fun
-	ExtNetHandler.Register(uint8(cmd), uint8(act), handlerUserInfo)
+	ExtNetHandler.Register(uint8(cmd), uint8(act), fun)
 }
 
 func handlerUserInfo(msgque antnet.IMsgQue, msg *antnet.Message) bool {
